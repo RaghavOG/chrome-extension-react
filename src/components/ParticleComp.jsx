@@ -35,7 +35,7 @@ const ParticlesComponent = (props) => {
     fpsLimit: 120,
     particles: {
       number: {
-        value: 450,
+        value: 300  ,
         density: {
           enable: true,
           value_area: 800,

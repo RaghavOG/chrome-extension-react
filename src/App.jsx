@@ -1,32 +1,26 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import './App.css'
-import ParticlesComponent from "./components/ParticleComp"
 import { Button } from "@/components/ui/button"
-import { Separator } from './components/ui/separator'
-import Modal from './components/Modal'  // Import the Modal component
-import TodoApp from './components/TodoApp' // Import the TodoApp component
+import { Separator } from "@/components/ui/separator"
+import TodoApp from '@/components/TodoApp'
+import { Youtube, MessageSquare } from 'lucide-react'
+import ParticleComp from './components/ParticleComp'
+import Modal from './components/Modal'
 
-
-function App() {
+export default function Home() {
   const [date, setDate] = useState(new Date())
   const [waterCount, setWaterCount] = useState(0)
   const [stopwatchTime, setStopwatchTime] = useState(0)
   const [stopwatchMicroseconds, setStopwatchMicroseconds] = useState(0)
   const [isRunning, setIsRunning] = useState(false)
   const [tabCount, setTabCount] = useState(0)
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [showTodo, setShowTodo] = useState(false)
 
-  const openTodoApp = () => {
-    setIsModalOpen(true); // Open the Todo modal
-  }
+  
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setDate(new Date())
-    }, 1000)
-
+    const timer = setInterval(() => setDate(new Date()), 1000)
     return () => clearInterval(timer)
   }, [])
 
@@ -99,9 +93,9 @@ function App() {
     const [timePart, ampm] = time.split(' ');
 
     return (
-      <span className="flex items-center">
-        <span className="text-[12rem] font-bold tracking-wider">{timePart}</span>
-        <span className="text-6xl font-bold ml-2">{ampm}</span>
+      <span className="flex items-center justify-center">
+        <span className="text-4xl sm:text-6xl md:text-8xl lg:text-9xl xl:text-[12rem] font-bold tracking-wider">{timePart}</span>
+        <span className="text-xl sm:text-2xl md:text-3xl lg:text-4xl xl:text-6xl font-bold ml-2">{ampm}</span>
       </span>
     );
   };
@@ -130,68 +124,76 @@ function App() {
     localStorage.setItem('stopwatchMicroseconds', '0')
   }
 
-  const openYouTube = () => {
-    window.open("https://www.youtube.com", "_parent")
-  }
-
-  const openChatGPT = () => {
-    window.open("https://chat.openai.com", "_parent")
-  }
+  const openYouTube = () => window.open("https://www.youtube.com", "_parent")
+  const openChatGPT = () => window.open("https://chatgpt.com", "_parent")
 
   return (
     <>
-      <div className="relative z-50 flex flex-col justify-between min-h-screen bg-transparent text-white p-4 overflow-hidden">  
-        <div className="absolute top-4 left-4 text-white text-sm z-50">
-          New Tabs: {tabCount}
+    {/* Background particles */}
+    <ParticleComp className="absolute inset-0 z-0" />
+
+    <div className="flex flex-col justify-between min-h-screen  text-white p-4 overflow-hidden relative z-10">
+      {/* Display Tab Count */}
+      <div className="absolute top-4 left-4 text-white text-sm z-20">
+        New Tabs: {tabCount}
+      </div>
+
+      {/* Date and Time */}
+      <div className="flex flex-col items-center justify-center flex-grow text-center relative z-20">
+        <div className="mb-2 text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-light">
+          {formatDate(date)}
         </div>
-
-        <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-center">
-          <div className="mb-2 text-5xl font-light">
-            {formatDate(date)}
-          </div>
-          <div className="text-[200px] font-bold tracking-wider">
-            {formatTime(date)}
-          </div>
-          <Separator className="mt-4" />
+        {formatTime(date)}
+        <Separator className="my-4" />
+        
+        {/* Buttons for YouTube and ChatGPT */}
+        <div className="flex flex-col sm:flex-row gap-4 mt-4 z-20">
+          <Button onClick={openYouTube} className="bg-red-600 hover:bg-red-700">
+            <Youtube className="mr-2 h-4 w-4" /> YouTube
+          </Button>
+          <Button onClick={openChatGPT} className="bg-green-600 hover:bg-green-700">
+            <MessageSquare className="mr-2 h-4 w-4" /> ChatGPT
+          </Button>
         </div>
+        
+        {/* Todo Button */}
+        <Button onClick={() => setShowTodo(!showTodo)} className="mt-4 bg-blue-600 hover:bg-blue-700 z-20">
+          {showTodo ? 'Hide' : 'Show'} Todo
+        </Button>
+      </div>
 
-        {/* New Buttons for YouTube and ChatGPT */}
-        <div className="absolute top-3/4 left-1/2 transform -translate-x-1/2 flex gap-4">
-          <Button onClick={openYouTube} className="bg-red-600">Open YouTube</Button>
-          <Button onClick={openChatGPT} className="bg-blue-600">Open ChatGPT</Button>
-          {/* <Button onClick={openTodoApp} className="bg-green-600">Open To-Do</Button> */}
+      {/* Todo Modal */}
+      {showTodo && (
+        <Modal isOpen={showTodo} onClose={() => setShowTodo(false)}>
+          <TodoApp />
+        </Modal>
+      )}
 
-        </div>
-
-        <div className="absolute bottom-4 left-4 flex items-center justify-center gap-4 text-sm">
+      {/* Water Count and Stopwatch */}
+      <div className="flex justify-between items-end relative z-20">
+        {/* Water Count Section */}
+        <div className="flex items-center justify-center gap-4 text-sm">
           <div className="text-xl font-bold mb-2">
             Water Count: {waterCount}
             <div>
-              <Button onClick={incrementWaterCount} className="mt-2 bg-green-600">Add Water</Button>
+              <Button onClick={incrementWaterCount} className="mt-2 bg-blue-600 hover:bg-blue-700">Add Water</Button>
             </div>
           </div>
         </div>
 
-        <div className="absolute bottom-4 right-4 flex flex-col items-center gap-4">
+        {/* Stopwatch Section */}
+        <div className="flex flex-col items-center gap-4">
           <div className="text-2xl font-bold mb-2">
             {formatStopwatchTime(stopwatchTime, stopwatchMicroseconds)}
           </div>
           <div className="flex gap-2">
             <Button onClick={handleStopwatchStart} disabled={isRunning} variant="secondary">Start</Button>
             <Button onClick={handleStopwatchStop} disabled={!isRunning} variant="destructive">Stop</Button>
-            <Button onClick={handleStopwatchReset} variant="ghost">Reset</Button>
-            {/* <TodoApp /> */}
+            <Button onClick={handleStopwatchReset} variant="outline">Reset</Button>
           </div>
         </div>
-              {/* Modal to display TodoApp */}
-        {/* <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-          <TodoApp />
-        </Modal> */}
       </div>
-
-      <ParticlesComponent className="absolute inset-0 w-full h-full z-0" />
+    </div>
     </>
   )
 }
-
-export default App
