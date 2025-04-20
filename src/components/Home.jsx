@@ -28,6 +28,7 @@ import {
   StickyNote,
   Camera,
   Trash2,
+  Github,
 } from "lucide-react"
 
 export default function HomeDashboard() {
@@ -61,8 +62,13 @@ export default function HomeDashboard() {
       icon: <Youtube size={16} />,
     },
     {
+      name: "Github",
+      url: "https://github.com/raghavog",
+      icon: <MessageSquare size={16} />,
+    },
+    {
       name: "ChatGPT",
-      url: "https://chat.openai.com",
+      url: "https://chatgpt.com",
       icon: <MessageSquare size={16} />,
     },
   ])
@@ -274,7 +280,8 @@ export default function HomeDashboard() {
   }
 
   const openYouTube = () => window.open("https://www.youtube.com", "_parent")
-  const openChatGPT = () => window.open("https://chat.openai.com", "_parent")
+  const openChatGPT = () => window.open("https://chatgpt.com", "_parent")
+  const openGithub = () => window.open("https://github.com/raghavog", "_parent")
 
   // New handlers for added features
   const fetchWeatherData = async () => {
@@ -644,6 +651,12 @@ export default function HomeDashboard() {
               className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 border-none shadow-lg"
             >
               <MessageSquare className="mr-2 h-4 w-4" /> ChatGPT
+            </Button>
+            <Button
+              onClick={openGithub}
+              className="bg-gradient-to-r from-gray-700 to-gray-900 hover:from-gray-900 hover:to-gray-700 border-none shadow-lg"
+            >
+              <Github className="mr-2 h-4 w-4" /> Github
             </Button>
           </div>
         </div>
