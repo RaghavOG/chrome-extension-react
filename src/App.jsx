@@ -1,6 +1,7 @@
 import DocumentLibrary from "./components/DocumentLibrary";
 import ExamSchedule from "./components/ExamSchedule";
 import HomeDashboard from "./components/Home";
+import NotesLibrary from "./components/NotesLibrary";
 
 export default function Home() {
   return (
@@ -8,6 +9,7 @@ export default function Home() {
       <HomeDashboard />
       <DocumentLibrary />
       <ExamSchedule />
+      <NotesLibrary />
     </>
   );
 }
